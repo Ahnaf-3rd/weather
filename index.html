@@ -1,0 +1,154 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SkyView – Weather App</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+
+    <!-- Font Awesome 6 (Free Icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+    <div class="app">
+        <!-- HEADER -->
+        <header class="app-header">
+            <div class="app-brand">
+                <span class="brand-icon"><i class="fas fa-cloud-sun"></i></span>
+                <h1>SkyView</h1>
+            </div>
+            <div class="unit-toggle" id="unitToggle">
+                <button class="active" data-unit="metric">°C</button>
+                <button data-unit="imperial">°F</button>
+            </div>
+        </header>
+
+        <!-- SEARCH -->
+        <form class="search-box" id="searchForm" autocomplete="off">
+            <input
+            type="text"
+            id="searchInput"
+            placeholder="Search for a city…"
+            aria-label="Search for a city"
+            />
+            <button type="submit">
+                <i class="fas fa-magnifying-glass"></i>
+                <span>Search</span>
+            </button>
+        </form>
+
+        <!-- STATUS MESSAGE -->
+        <div class="status-message" id="statusMessage">
+            <i class="fas fa-cloud"></i> Enter a city name to get started.
+        </div>
+
+        <!-- WEATHER CARD -->
+        <div class="weather-card hidden" id="weatherCard">
+
+            <!-- Main -->
+            <div class="weather-main">
+                <div class="weather-left">
+                    <div class="weather-icon-wrap" id="weatherIconWrap">
+                        <img id="weatherIcon" src="" alt="Weather icon" />
+                    </div>
+                    <div>
+                        <div class="weather-temp" id="weatherTemp">
+                            --<span class="deg-symbol">°</span>
+                        </div>
+                        <div class="weather-condition" id="weatherCondition">--</div>
+                    </div>
+                </div>
+                <div class="weather-right">
+                    <div class="weather-city" id="weatherCity">--</div>
+                    <div class="weather-country" id="weatherCountry">--</div>
+                    <div class="weather-last-updated" id="weatherUpdated">--</div>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-grid" id="statsGrid">
+                <!-- Humidity -->
+                <div class="stat-item">
+                    <span class="stat-icon"><i class="fas fa-droplet"></i></span>
+                    <div class="stat-label">Humidity</div>
+                    <div class="stat-value" id="statHumidity">--%</div>
+                </div>
+                <!-- Wind Speed -->
+                <div class="stat-item">
+                    <span class="stat-icon"><i class="fas fa-wind"></i></span>
+                    <div class="stat-label">Wind Speed</div>
+                    <div class="stat-value" id="statWind">--</div>
+                    <div class="stat-sub" id="statWindDir">--</div>
+                </div>
+                <!-- UV Index -->
+                <div class="stat-item" id="uvStat">
+                    <span class="stat-icon"><i class="fas fa-sun"></i></span>
+                    <div class="stat-label">UV Index</div>
+                    <div class="stat-value" id="statUv">--</div>
+                    <div class="stat-sub" id="statUvLabel">--</div>
+                </div>
+                <!-- Feels Like -->
+                <div class="stat-item">
+                    <span class="stat-icon"><i class="fas fa-temperature-high"></i></span>
+                    <div class="stat-label">Feels Like</div>
+                    <div class="stat-value" id="statFeelsLike">--°</div>
+                </div>
+            </div>
+
+            <!-- Extra Info -->
+            <div class="extra-info" id="extraInfo">
+                <div class="extra-item">
+                    <i class="fas fa-gauge-high"></i>
+                    <span>Pressure</span>
+                    <span id="extraPressure">-- hPa</span>
+                </div>
+                <div class="extra-item">
+                    <i class="fas fa-eye"></i>
+                    <span>Visibility</span>
+                    <span id="extraVisibility">-- km</span>
+                </div>
+                <div class="extra-item">
+                    <i class="fas fa-cloud"></i>
+                    <span>Clouds</span>
+                    <span id="extraClouds">--%</span>
+                </div>
+                <div class="extra-item">
+                    <i class="fas fa-sunrise"></i>
+                    <span>Sunrise</span>
+                    <span id="extraSunrise">--</span>
+                </div>
+                <div class="extra-item">
+                    <i class="fas fa-sunset"></i>
+                    <span>Sunset</span>
+                    <span id="extraSunset">--</span>
+                </div>
+            </div>
+
+            <!-- Forecast -->
+            <div class="forecast-section" id="forecastSection">
+                <div class="forecast-title">
+                    <i class="fas fa-calendar-week"></i> 5-Day Forecast
+                </div>
+                <div class="forecast-grid" id="forecastGrid">
+                    <!-- injected by JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <footer class="app-footer">
+            <span>Powered by <a href="https://www.weatherapi.com/" target="_blank" rel="noopener noreferrer">WeatherAPI.com</a></span>
+            &nbsp;·&nbsp; <span id="footerYear">2026</span>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
