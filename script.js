@@ -2,7 +2,7 @@
         const API_KEY = '9d23b5ed352f445982b161355262907';
         const BASE_URL = 'https://api.weatherapi.com/v1';
         let currentUnit = 'metric';
-        let currentCity = 'Dhaka';
+        let currentCity = 'Sylhet';
         let isCelsius = true;
         const $ = (sel) => document.querySelector(sel);
         const $$ = (sel) => document.querySelectorAll(sel);
@@ -271,7 +271,7 @@
         });
 
         (function init() {
-            const defaultCity = 'Dhaka';
+            const defaultCity = 'Sylhet';
             currentCity = defaultCity;
             searchInput.value = defaultCity;
             loadWeather(defaultCity, currentUnit);
