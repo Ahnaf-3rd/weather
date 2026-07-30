@@ -37,10 +37,9 @@
             justify-content: center;
             padding: 20px;
             transition: background 0.8s ease;
-            /* fallback background; will be overridden by JS */;
         }
 
-        /* animated background overlay */
+
         body::before {
             content: '';
             position: fixed;
@@ -52,7 +51,6 @@
             pointer-events: none;
         }
 
-        /* ===== APP CONTAINER ===== */
         .app {
             position: relative;
             z-index: 1;
@@ -61,7 +59,6 @@
             margin: 0 auto;
         }
 
-        /* ===== HEADER ===== */
         .app-header {
             display: flex;
             align-items: center;
@@ -129,7 +126,6 @@
             color: var(--text-primary);
         }
 
-        /* ===== SEARCH ===== */
         .search-box {
             display: flex;
             gap: 12px;
@@ -190,7 +186,6 @@
             transform: scale(0.96);
         }
 
-        /* ===== LOADING / ERROR ===== */
         .status-message {
             text-align: center;
             padding: 20px;
@@ -365,7 +360,6 @@
             margin-top: 2px;
         }
 
-        /* UV Index special coloring */
         .uv-low .stat-value {
             color: #4ade80;
         }
@@ -382,7 +376,6 @@
             color: #a78bfa;
         }
 
-        /* --- Additional Info --- */
         .extra-info {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
@@ -481,25 +474,7 @@
             margin-top: 2px;
         }
 
-        /* ===== FOOTER ===== */
-        .app-footer {
-            margin-top: 24px;
-            text-align: center;
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            letter-spacing: 0.02em;
-        }
 
-        .app-footer a {
-            color: var(--accent);
-            text-decoration: none;
-        }
-
-        .app-footer a:hover {
-            text-decoration: underline;
-        }
-
-        /* ===== RESPONSIVE ===== */
         @media (max-width: 640px) {
             .app-header {
                 flex-direction: column;
@@ -594,7 +569,6 @@
             }
         }
 
-        /* ===== SCROLLBAR ===== */
         ::-webkit-scrollbar {
             width: 6px;
         }

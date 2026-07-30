@@ -1,13 +1,9 @@
 
         const API_KEY = '9d23b5ed352f445982b161355262907';
         const BASE_URL = 'https://api.weatherapi.com/v1';
-        let currentUnit = 'metric'; // 'metric' or 'imperial'
-        let currentCity = 'London';
+        let currentUnit = 'metric';
+        let currentCity = 'Dhaka';
         let isCelsius = true;
-
-        // ============================================================
-        //  DOM REFS
-        // ============================================================
         const $ = (sel) => document.querySelector(sel);
         const $$ = (sel) => document.querySelectorAll(sel);
 
@@ -40,9 +36,6 @@
         const forecastGrid = $('#forecastGrid');
         const unitToggle = $('#unitToggle');
 
-        // ============================================================
-        //  HELPERS
-        // ============================================================
         function showStatus(msg, isError = false) {
             statusMsg.innerHTML = msg;
             statusMsg.className = 'status-message' + (isError ? ' error' : '');
@@ -101,9 +94,6 @@
             return `https:${code}`;
         }
 
-        // ============================================================
-        //  FETCH WEATHER DATA
-        // ============================================================
         async function fetchWeather(city, unit) {
             const url = `${BASE_URL}/forecast.json?key=${API_KEY}&q=${encodeURIComponent(city)}&days=5&aqi=no&alerts=no&units=${unit}`;
 
@@ -116,27 +106,30 @@
             return await response.json();
         }
 
-        // ============================================================
-        //  RENDER WEATHER
-        // ============================================================
+        function formatTimeFromString(timeStr) {
+            if (!timeStr) return '--';
+            const parts = timeStr.match(/(\d{1,2}):(\d{2})\s?(AM|PM)/i);
+            if (!parts) return timeStr;
+            let hours = parseInt(parts[1], 10);
+            const minutes = parts[2];
+            const ampm = parts[3].toUpperCase();
+            if (ampm === 'PM' && hours !== 12) hours += 12;
+            if (ampm === 'AM' && hours === 12) hours = 0;
+            return `${String(hours).padStart(2, '0')}:${minutes}`;
+        }
+
         function renderWeather(data) {
             const current = data.current;
             const location = data.location;
             const forecast = data.forecast;
-
-            // --- Main ---
             const temp = isCelsius ? current.temp_c : current.temp_f;
             weatherTemp.innerHTML = `${Math.round(temp)}<span class="deg-symbol">°${isCelsius ? 'C' : 'F'}</span>`;
             weatherCondition.textContent = current.condition.text;
             weatherCity.textContent = location.name;
             weatherCountry.textContent = location.country;
             weatherUpdated.textContent = `Updated: ${formatTime(current.last_updated)}`;
-
-            // Icon
             weatherIcon.src = getWeatherIconUrl(current.condition.icon);
             weatherIcon.alt = current.condition.text;
-
-            // --- Stats ---
             statHumidity.textContent = `${current.humidity}%`;
 
             const windSpeed = isCelsius ? current.wind_kph : current.wind_mph;
@@ -153,29 +146,22 @@
             const feelsLike = isCelsius ? current.feelslike_c : current.feelslike_f;
             statFeelsLike.textContent = `${Math.round(feelsLike)}°${isCelsius ? 'C' : 'F'}`;
 
-            // --- Extra ---
             extraPressure.textContent = `${current.pressure_mb} hPa`;
             const vis = isCelsius ? current.vis_km : (current.vis_miles || current.vis_km * 0.621371);
             extraVisibility.textContent = isCelsius ? `${current.vis_km} km` : `${Math.round(vis)} mi`;
             extraClouds.textContent = `${current.cloud}%`;
-            extraSunrise.textContent = formatTime(location.localtime.split(' ')[0] + 'T' + forecast.forecastday[0].astro.sunrise);
-            extraSunset.textContent = formatTime(location.localtime.split(' ')[0] + 'T' + forecast.forecastday[0].astro.sunset);
+            extraSunrise.textContent = formatTimeFromString(forecast.forecastday[0].astro.sunrise);
+            extraSunset.textContent = formatTimeFromString(forecast.forecastday[0].astro.sunset);
 
-            // --- Forecast ---
             renderForecast(forecast.forecastday);
 
-            // --- Dynamic background based on condition ---
             updateBackground(current.condition.text, current.is_day);
 
             showWeather();
         }
 
-        // ============================================================
-        //  RENDER FORECAST
-        // ============================================================
         function renderForecast(forecastDays) {
             forecastGrid.innerHTML = '';
-            // Show up to 5 days (excluding today if we want, but we'll show all 5)
             const days = forecastDays.slice(0, 5);
             days.forEach((day, index) => {
                 const date = day.date;
@@ -197,9 +183,6 @@
             });
         }
 
-        // ============================================================
-        //  DYNAMIC BACKGROUND
-        // ============================================================
         function updateBackground(condition, isDay) {
             const body = document.body;
             const lower = condition.toLowerCase();
@@ -236,9 +219,6 @@
             body.style.background = bg;
         }
 
-        // ============================================================
-        //  LOAD WEATHER
-        // ============================================================
         async function loadWeather(city, unit) {
             if (!city || city.trim() === '') {
                 showStatus('Please enter a city name.', true);
@@ -259,30 +239,20 @@
             }
         }
 
-        // ============================================================
-        //  UNIT TOGGLE
-        // ============================================================
         function setUnit(unit) {
             if (unit === currentUnit) return;
             currentUnit = unit;
             isCelsius = unit === 'metric';
 
-            // Update toggle buttons
             $$('#unitToggle button').forEach((btn) => {
                 btn.classList.toggle('active', btn.dataset.unit === unit);
             });
 
-            // Reload weather if we have a city
             if (currentCity) {
                 loadWeather(currentCity, currentUnit);
             }
         }
 
-        // ============================================================
-        //  EVENT LISTENERS
-        // ============================================================
-
-        // Search form
         searchForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const city = searchInput.value.trim();
@@ -293,7 +263,6 @@
             }
         });
 
-        // Unit toggle
         unitToggle.addEventListener('click', (e) => {
             const btn = e.target.closest('button');
             if (!btn) return;
@@ -301,24 +270,16 @@
             if (unit) setUnit(unit);
         });
 
-        // Enter key support (already handled by form submit)
-
-        // ============================================================
-        //  INIT – load default city
-        // ============================================================
         (function init() {
-            const defaultCity = 'London';
+            const defaultCity = 'Dhaka';
             currentCity = defaultCity;
             searchInput.value = defaultCity;
             loadWeather(defaultCity, currentUnit);
-
-            // Footer year
-            document.getElementById('footerYear').textContent = new Date().getFullYear();
         })();
 
         setTimeout(() => {
             if (API_KEY === '9d23b5ed352f445982b161355262907') {
-                // Check if we're showing an error about the key
+
                 const msg = statusMsg.textContent;
                 if (msg.includes('401') || msg.includes('key') || msg.includes('invalid')) {
                     statusMsg.innerHTML = `
